@@ -8,16 +8,6 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "rules": {
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allow": [
-          "_id"
-        ]
-      }
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Delendik/express-mesto.git"
