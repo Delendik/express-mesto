@@ -1,10 +1,11 @@
 const Card = require('../models/card');
 
-module.exports.readCards = (req, res) => {
-  Card.find({})
-    .then((data) => res.send(data))
-    .catch((err) => {
-      console.log('err = ', err.message);
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    });
+module.exports.readCards = async (req, res) => {
+  try {
+    const card = await Card.find({});
+    res.send(card);
+  } catch (error) {
+    console.log('err = ', error.message);
+    res.status(500).send({ message: 'Ошибка на сервере' });
+  }
 };
