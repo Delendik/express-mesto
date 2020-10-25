@@ -1,37 +1,10 @@
 const router = require('express').Router();
-const path = require('path');
-const readFile = require('../utils/read-file');
+const { readUsers, readUser, createUser } = require('../controllers/users');
 
-const jsonDataPath = path.join(__dirname, '..', 'data', 'users.json');
+router.get('/users', readUsers);
 
-router.get('/users', (req, res) => {
-  readFile(jsonDataPath)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log('err = ', err.message);
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    });
-});
+router.get('/users/:_id', readUser);
 
-router.get('/users/:_id', (req, res) => {
-  const { _id } = req.params;
-  readFile(jsonDataPath)
-    .then((data) => {
-      const findUser = data.find((user) => user._id === _id);
-      return findUser;
-    })
-    .then((user) => {
-      if (!user) {
-        return res.status(404).send({ message: 'Нет пользователя с таким id' });
-      }
-      return res.send(user);
-    })
-    .catch((err) => {
-      console.log('err = ', err.message);
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    });
-});
+router.post('/users', createUser);
 
 module.exports = router;
