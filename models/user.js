@@ -18,7 +18,7 @@ const userSchema = new Schema({
     required: true,
     validate: {
       validator(v) {
-        return / ^(http|https):\/\/w?w?w?\.?(\w|\D)+\.(ru|com) /.test(v);
+        return /^(http|https):\/\/w?w?w?\.?(\w|\D)+\.(ru|com)/.test(v);
       },
     },
   },
