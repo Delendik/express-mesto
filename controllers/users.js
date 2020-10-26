@@ -36,3 +36,19 @@ module.exports.createUser = async (req, res) => {
     res.status(400).send({ message: 'Некорректные данные' });
   }
 };
+
+module.exports.updateUserInfo = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const user = await User.findByIdAndUpdate(req.user._id, { name },
+      {
+        new: true,
+        runValidators: true,
+        upsert: true,
+      });
+    res.send({ data: user });
+  } catch (error) {
+    console.log('err = ', error.message);
+    res.status(400).send({ message: 'Некорректные данные' });
+  }
+};
