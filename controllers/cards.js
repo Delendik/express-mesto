@@ -1,12 +1,20 @@
 const Card = require('../models/card');
 
+const checkError = (error, res) => {
+  if (error.name === 'CastError' || error.name === 'ValidationError') {
+    res.status(400).send({ message: 'Некорректные данные' });
+  } else {
+    res.status(500).send({ message: 'Ошибка на сервере' });
+  }
+};
+
 module.exports.readCards = async (req, res) => {
   try {
     const card = await Card.find({});
     res.send(card);
   } catch (error) {
     console.log('err = ', error.message);
-    res.status(500).send({ message: 'Ошибка на сервере' });
+    checkError(error, res);
   }
 };
 
@@ -17,7 +25,7 @@ module.exports.createCard = async (req, res) => {
     res.send({ data: card });
   } catch (error) {
     console.log('err = ', error.message);
-    res.status(400).send({ message: 'Некорректные данные' });
+    checkError(error, res);
   }
 };
 
@@ -26,11 +34,11 @@ module.exports.deleteCard = async (req, res) => {
     const { _id } = req.params;
     const card = await Card.findOneAndRemove(_id);
     if (!card) {
-      return res.status(404).send({ message: 'Нет карточки с таким id' });
+      res.status(404).send({ message: 'Нет карточки с таким id' });
     }
-    return res.status(200).send(card);
+    res.status(200).send(card);
   } catch (error) {
     console.log('err = ', error.message);
-    res.status(500).send({ message: 'Ошибка на сервере' });
+    checkError(error, res);
   }
 };
