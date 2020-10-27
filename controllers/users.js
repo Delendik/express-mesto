@@ -59,3 +59,19 @@ module.exports.updateUserInfo = async (req, res) => {
     checkError(error, res);
   }
 };
+
+module.exports.updateAvatarInfo = async (req, res) => {
+  try {
+    const { avatar } = req.body;
+    const user = await User.findByIdAndUpdate(req.user._id, { avatar },
+      {
+        new: true,
+        runValidators: true,
+        upsert: true,
+      });
+    res.send({ data: user });
+  } catch (error) {
+    console.log('err = ', error.message);
+    checkError(error, res);
+  }
+};

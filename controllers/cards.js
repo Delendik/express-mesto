@@ -43,3 +43,33 @@ module.exports.deleteCard = async (req, res) => {
     checkError(error, res);
   }
 };
+
+module.exports.likeCard = async (req, res) => {
+  try {
+    console.log(req.params);
+    const card = await Card.findByIdAndUpdate(
+      req.params._id,
+      { $addToSet: { likes: req.user._id } },
+      { new: true },
+    );
+    res.status(200).send(card);
+  } catch (error) {
+    console.log('err = ', error.message);
+    checkError(error, res);
+  }
+};
+
+module.exports.dislikeCard = async (req, res) => {
+  try {
+    console.log(req.params);
+    const card = await Card.findByIdAndUpdate(
+      req.params._id,
+      { $pull: { likes: req.user._id } },
+      { new: true },
+    );
+    res.status(200).send(card);
+  } catch (error) {
+    console.log('err = ', error.message);
+    checkError(error, res);
+  }
+};
