@@ -24,6 +24,7 @@ module.exports.readUser = async (req, res) => {
     const user = await User.findById(_id);
     if (!user) {
       res.status(404).send({ message: 'Нет пользователя с таким id' });
+      return;
     }
     res.status(200).send(user);
   } catch (error) {

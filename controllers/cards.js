@@ -32,9 +32,10 @@ module.exports.createCard = async (req, res) => {
 module.exports.deleteCard = async (req, res) => {
   try {
     const { _id } = req.params;
-    const card = await Card.findOneAndRemove(_id);
+    const card = await Card.findOneAndRemove({ _id });
     if (!card) {
       res.status(404).send({ message: 'Нет карточки с таким id' });
+      return;
     }
     res.status(200).send(card);
   } catch (error) {
