@@ -46,12 +46,15 @@ module.exports.deleteCard = async (req, res) => {
 
 module.exports.likeCard = async (req, res) => {
   try {
-    console.log(req.params);
     const card = await Card.findByIdAndUpdate(
       req.params._id,
       { $addToSet: { likes: req.user._id } },
       { new: true },
     );
+    if (!card) {
+      res.status(404).send({ message: 'Нет карточки с таким id' });
+      return;
+    }
     res.status(200).send(card);
   } catch (error) {
     console.log('err = ', error.message);
@@ -61,12 +64,15 @@ module.exports.likeCard = async (req, res) => {
 
 module.exports.dislikeCard = async (req, res) => {
   try {
-    console.log(req.params);
     const card = await Card.findByIdAndUpdate(
       req.params._id,
       { $pull: { likes: req.user._id } },
       { new: true },
     );
+    if (!card) {
+      res.status(404).send({ message: 'Нет карточки с таким id' });
+      return;
+    }
     res.status(200).send(card);
   } catch (error) {
     console.log('err = ', error.message);
